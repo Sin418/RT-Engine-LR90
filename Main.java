@@ -21,9 +21,13 @@ public class Main {
 
         double dotProduct = VectorCalculations.calculateDotProduct(vector1, vector2);
 
-        Vector newVector = VectorCalculations.addVectors(vector1,vector2);
+        Vector newVector1 = VectorCalculations.addVectors(vector1,vector2);
+        Vector newVector2 = VectorCalculations.multiplyVectorTo(vector1,8.0);
+
 
         System.out.println(dotProduct);
-        System.out.println(newVector.toString() );
+        System.out.println(newVector1.print());
+        System.out.println(vector2.print());
+        System.out.println(newVector2.print());
     }
 }

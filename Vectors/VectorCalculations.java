@@ -29,4 +29,28 @@ public class VectorCalculations {
         return newVector;
     }
 
+    public static Vector subtractVectors(Vector vector1, Vector vector2){
+        ArrayList<Double> newArray = new ArrayList<>();
+        for (int i = 0; i < vector1.getLength(); i++) {
+            double temp = 0.0;
+            temp = vector1.getDirection().get(i) - vector2.getDirection().get(i);
+            newArray.add(temp);
+        }
+        Vector newVector = new Vector(newArray);
+
+        return newVector;
+    }
+
+    public static Vector multiplyVectorTo(Vector vector1, double scalar){
+        ArrayList<Double> newArray = new ArrayList<>();
+        for (int i = 0; i < vector1.getLength(); i++) {
+            double temp = 0.0;
+            temp = vector1.getDirection().get(i) * scalar;
+            newArray.add(temp);
+        }
+        Vector newVector = new Vector(newArray);
+
+        return newVector;
+    }
+
 }

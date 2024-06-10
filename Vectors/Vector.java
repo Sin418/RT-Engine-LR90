@@ -37,8 +37,20 @@ public class Vector {
         return Math.sqrt(count);
     }
 
-    @Override
-    public String toString() {
+    public Vector normalize(){
+         double magnuitude = this.getMagnuitude();
+        ArrayList<Double> newArray = new ArrayList<>();
+        for(double i:this.direction){
+            double temp;
+            temp = i/magnuitude;
+            newArray.add(temp);
+        }
+        Vector newVector = new Vector(newArray);
+
+        return  newVector;
+    }
+
+    public String print() {
         return this.getDirection().toString();
     }
 }
