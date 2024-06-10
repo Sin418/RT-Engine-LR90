@@ -1,0 +1,21 @@
+# Java
+*.class
+*.log
+*.war
+*.ear
+*.jar
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+out/
+target/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Maven
+*.mvn
+!.mvn/wrapper/maven-wrapper.jar
