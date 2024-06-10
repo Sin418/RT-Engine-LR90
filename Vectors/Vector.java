@@ -31,7 +31,7 @@ public class Vector {
         double count = 0.0;
 
         for(double i:this.direction){
-            count+=i;
+            count+= i*i;
         }
 
         return Math.sqrt(count);

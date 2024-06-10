@@ -27,7 +27,7 @@ public class Main {
 
         System.out.println(dotProduct);
         System.out.println(newVector1.print());
-        System.out.println(vector2.print());
+        System.out.println(vector2.normalize().print());
         System.out.println(newVector2.print());
     }
 }
