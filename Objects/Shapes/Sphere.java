@@ -6,5 +6,14 @@ public class Sphere {
     private Vector center;
     private Material material;
 
+    public double getRadius(){
+        return radius;
+    }
+    public Vector getCenter(){
+        return center;
+    }
 
+    public Material getMaterial(){
+        return material;
+    }
 }

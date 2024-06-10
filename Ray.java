@@ -11,6 +11,13 @@ public class Ray {
         this.direction = direction;
 
     }
+    public Vector getDirection(){
+        return direction;
+    }
+
+    public Vector getOrigin(){
+        return origin;
+    }
 
     public Vector pointAtParameter(double t){
         Vector scaledDirection = VectorCalculations.multiplyVectorTo(direction,t);
