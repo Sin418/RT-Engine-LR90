@@ -6,7 +6,7 @@ public class Camera {
     private Vector horizontal;
     private Vector vertical;
 
-    public void camera(Vector origin, Vector lowerLeftCorner, Vector horizontal, Vector vertical){
+    public  Camera(Vector origin, Vector lowerLeftCorner, Vector horizontal, Vector vertical){
         this.origin = origin;
         this.lowerLeftCorner = lowerLeftCorner;
         this.horizontal = horizontal;

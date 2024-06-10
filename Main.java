@@ -1,33 +1,47 @@
 import Vectors.Vector;
 import Vectors.VectorCalculations;
+import java.awt.*;
+import java.util.List;
+import java.awt.image.BufferedImage;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import Materials.Material;
+import Objects.Shapes.Sphere;
 
-import java.util.ArrayList;
 
 public class Main {
-    public static void main(String[] args){
-        ArrayList<Double> direction1 = new ArrayList<>();
-        ArrayList<Double> direction2 = new ArrayList<>();
+    public static void main(String[] args) {
+        int width = 800;
+        int height = 600;
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
-        direction1.add(1.0);
-        direction1.add(2.0);
-        direction1.add(3.0);
+        // Set up the scene
+        Camera camera = new Camera(
+                new Vector(List.of(0.0, 0.0, 0.0)),
+                new Vector(List.of(-2.0, -1.5, -1.0)),
+                new Vector(List.of(4.0, 0.0, 0.0)),
+                new Vector(List.of(0.0, 3.0, 0.0))
+        );
+        Scene scene = new Scene(camera);
 
-        direction2.add(4.0);
-        direction2.add(5.0);
-        direction2.add(6.0);
+        scene.setCamera(camera);
 
-        Vector vector1 = new Vector(direction1);
-        Vector vector2 = new Vector(direction2);
+        // Add objects to the scene
+        Material material = new Material(Color.black); // Example color and reflectivity
+        Sphere sphere = new Sphere(new Vector(List.of(0.0, 0.0, -5.0)), 1, material);
+        scene.addObject(sphere);
 
-        double dotProduct = VectorCalculations.calculateDotProduct(vector1, vector2);
+        // Render the scene
+        Renderer renderer = new Renderer(scene);
+        renderer.render(image);
 
-        Vector newVector1 = VectorCalculations.addVectors(vector1,vector2);
-        Vector newVector2 = VectorCalculations.multiplyVectorTo(vector1,8.0);
-
-
-        System.out.println(dotProduct);
-        System.out.println(newVector1.print());
-        System.out.println(vector2.normalize().print());
-        System.out.println(newVector2.print());
+        // Display the image
+        JFrame frame = new JFrame("Ray Tracer");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(width, height);
+        frame.add(new JLabel(new ImageIcon(image)));
+        frame.pack();
+        frame.setVisible(true);
     }
 }

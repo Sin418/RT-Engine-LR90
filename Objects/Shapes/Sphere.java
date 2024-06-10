@@ -6,6 +6,12 @@ public class Sphere {
     private Vector center;
     private Material material;
 
+    public Sphere(Vector center, double radius, Material material){
+        this.center = center;
+        this.radius = radius;
+        this.material = material;
+    }
+
     public double getRadius(){
         return radius;
     }
