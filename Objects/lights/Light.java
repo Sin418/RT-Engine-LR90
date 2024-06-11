@@ -8,4 +8,8 @@ public class Light {
         this.position = position;
     }
 
+    public Vector getPosition(){
+        return position;
+    }
+
 }

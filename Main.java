@@ -1,6 +1,5 @@
 import Objects.lights.Light;
 import Vectors.Vector;
-import Vectors.VectorCalculations;
 import java.awt.*;
 import java.util.List;
 import java.awt.image.BufferedImage;
@@ -24,15 +23,13 @@ public class Main {
                 new Vector(List.of(0.0, 3.0, 0.0))
         );
 
-        Light light = new Light(new Vector(List.of(0.4, 2.0, 3.0)));
-        Scene scene = new Scene(camera);
+        Light light = new Light(new Vector(List.of(-1.0, -1.0, -0.5)));
+        Scene scene = new Scene(camera, light);
 
-        scene.setLight(light);
 
-        scene.setCamera(camera);
 
         Material material = new Material(Color.green); // Example color and reflectivity
-        Sphere sphere = new Sphere(new Vector(List.of(4.0, 1.0, -5.0)), 1, material);
+        Sphere sphere = new Sphere(new Vector(List.of(1.0, -1.0, -2.0)), 1, material);
 
         scene.addObject(sphere);
 

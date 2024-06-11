@@ -8,8 +8,9 @@ public class Scene {
     private Camera camera;
     private Light light;
 
-    public Scene(Camera camera){
+    public Scene(Camera camera, Light light){
         this.camera = camera;
+        this.light= light;
     }
 
 
