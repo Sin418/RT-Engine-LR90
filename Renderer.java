@@ -28,7 +28,7 @@ public class Renderer {
 
     public Color traceRay(Ray ray){
         double closestIntersectionDistance = Double.MAX_VALUE;
-        Color closestObjectColor = Color.black;
+        Color closestObjectColor = Color.white;
 
         for (Sphere sphere : scene.getObjects()) {
             Vector oc = VectorCalculations.subtractVectors(ray.getOrigin(), sphere.getCenter());
