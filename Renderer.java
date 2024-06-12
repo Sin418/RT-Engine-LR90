@@ -38,7 +38,7 @@ public class Renderer {
             Vector intersectionPoint = VectorCalculations.addVectors(ray.getOrigin(), VectorCalculations.multiplyVectorTo(ray.getDirection(), planeIntersectionDistance));
 
             if (isInShadow(intersectionPoint, plane)) {
-                closestObjectColor = Color.black; // Shadow color
+                closestObjectColor = Color.black;
             } else {
                 closestObjectColor = plane.getColor();
             }
@@ -62,7 +62,7 @@ public class Renderer {
                     Vector intersectionPoint = VectorCalculations.addVectors(ray.getOrigin(), VectorCalculations.multiplyVectorTo(ray.getDirection(), t));
 
                     if (isInShadow(intersectionPoint, sphere)) {
-                        closestObjectColor = Color.black; // Shadow color
+                        closestObjectColor = Color.black; 
                     } else {
                         closestObjectColor = sphere.getMaterial().getColor();
                     }
@@ -77,11 +77,9 @@ public class Renderer {
         Vector lightSourcePos = scene.getLight().getPosition();
         Vector shadowRayDirection = VectorCalculations.subtractVectors(lightSourcePos, intersectionPoint).normalize();
 
-        // Offset intersection point slightly to avoid self-intersection
         Vector shadowRayOrigin = VectorCalculations.addVectors(intersectionPoint, VectorCalculations.multiplyVectorTo(shadowRayDirection, 0.001));
         Ray shadowRay = new Ray(shadowRayOrigin, shadowRayDirection);
 
-        // Check for sphere shadows
         for (Sphere obj : scene.getObjects()) {
             Vector oc = VectorCalculations.subtractVectors(shadowRay.getOrigin(), obj.getCenter());
             double A = VectorCalculations.calculateDotProduct(shadowRay.getDirection(), shadowRay.getDirection());
@@ -94,7 +92,6 @@ public class Renderer {
                 double t2 = (-B + Math.sqrt(discriminant)) / (2.0 * A);
                 double t = Math.min(t1, t2);
 
-                // Check if the intersection is between the intersection point and the light source
                 double lightDistance = VectorCalculations.subtractVectors(lightSourcePos, intersectionPoint).getMagnitude();
                 if (t > 0 && t < lightDistance) {
                     return true;
@@ -102,7 +99,6 @@ public class Renderer {
             }
         }
 
-        // Check for plane shadows
         plane = Scene.getDefaultPlane();
         double t = plane.intersect(shadowRay);
         double lightDistance = VectorCalculations.subtractVectors(lightSourcePos, intersectionPoint).getMagnitude();
