@@ -1,7 +1,6 @@
 package Vectors;
 import java.util.List;
 import java.util.ArrayList;
-import java.lang.Math;
 
 public class Vector {
     private List<Double> direction;
@@ -11,12 +10,7 @@ public class Vector {
     }
 
     public int getLength(){
-        int count = 0;
-
-        for(Double i: this.direction){
-            count++;
-        }
-        return count;
+        return direction.size();
     }
 
     public List<Double> getDirection() {
@@ -27,30 +21,24 @@ public class Vector {
         this.direction = direction;
     }
 
-    public double getMagnuitude(){
-        double count = 0.0;
-
-        for(double i:this.direction){
-            count+= i*i;
+    public double getMagnitude() {
+        double sum = 0.0;
+        for (double component : direction) {
+            sum += component * component;
         }
-
-        return Math.sqrt(count);
+        return Math.sqrt(sum);
     }
 
-    public Vector normalize(){
-         double magnuitude = this.getMagnuitude();
-        ArrayList<Double> newArray = new ArrayList<>();
-        for(double i:this.direction){
-            double temp;
-            temp = i/magnuitude;
-            newArray.add(temp);
+    public Vector normalize() {
+        double magnitude = getMagnitude();
+        List<Double> normalizedComponents = new ArrayList<>();
+        for (double component : direction) {
+            normalizedComponents.add(component / magnitude);
         }
-        Vector newVector = new Vector(newArray);
-
-        return  newVector;
+        return new Vector(normalizedComponents);
     }
 
     public String print() {
-        return this.getDirection().toString();
+        return direction.toString();
     }
 }

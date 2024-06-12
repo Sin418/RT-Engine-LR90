@@ -9,7 +9,6 @@ import javax.swing.JLabel;
 import Materials.Material;
 import Objects.Shapes.Sphere;
 
-
 public class Main {
     public static void main(String[] args) {
         int width = 800;
@@ -24,15 +23,12 @@ public class Main {
         );
 
         Light light = new Light(new Vector(List.of(-1.0, -1.0, -0.5)));
-        Scene scene = new Scene(camera, light);
+        Plane groundPlane = new Plane(new Vector(List.of(0.0, 1.0, 0.0)), new Vector(List.of(0.0, -1.0, 0.0)), Color.gray);
+        Scene scene = new Scene(camera, light, groundPlane);
 
-
-
-        Material material = new Material(Color.green); // Example color and reflectivity
-        Sphere sphere = new Sphere(new Vector(List.of(1.0, -1.0, -2.0)), 1, material);
-
+        Material sphereMaterial = new Material(Color.green);
+        Sphere sphere = new Sphere(new Vector(List.of(1.0, -1.0, -2.0)), 1, sphereMaterial);
         scene.addObject(sphere);
-
 
         Renderer renderer = new Renderer(scene);
         renderer.render(image);
