@@ -1,6 +1,8 @@
 import Objects.Shapes.Sphere;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+
+import Materials.Material;
 import Objects.lights.Light;
 import Vectors.Vector;
 import Vectors.VectorCalculations;
@@ -27,59 +29,79 @@ public class Renderer {
     }
 
     public Color traceRay(Ray ray) {
-        double closestIntersectionDistance = Double.MAX_VALUE;
-        Color closestObjectColor = Color.white;
-    
-        Plane plane = scene.getDefaultPlane();
-        double planeIntersectionDistance = plane.intersect(ray);
-        if (planeIntersectionDistance < closestIntersectionDistance) {
-            closestIntersectionDistance = planeIntersectionDistance;
-            Vector intersectionPoint = VectorCalculations.addVectors(ray.getOrigin(), VectorCalculations.multiplyVectorTo(ray.getDirection(), planeIntersectionDistance));
-    
-            if (isInShadow(intersectionPoint, plane)) {
-                closestObjectColor = Color.black;
-            } else {
-                closestObjectColor = applyLuminanceDropOff(plane.getColor(), intersectionPoint);
-            }
+    double closestIntersectionDistance = Double.MAX_VALUE;
+    Color closestObjectColor = Color.white;
+
+    // Check intersection with light source sphere
+    Sphere lightSphere = new Sphere(scene.getLight().getPosition(), 0.1, new Material(Color.blue)); // Small sphere with blue color
+    Vector oc = VectorCalculations.subtractVectors(ray.getOrigin(), lightSphere.getCenter());
+    double A = VectorCalculations.calculateDotProduct(ray.getDirection(), ray.getDirection());
+    double B = 2.0 * VectorCalculations.calculateDotProduct(oc, ray.getDirection());
+    double C = VectorCalculations.calculateDotProduct(oc, oc) - lightSphere.getRadius() * lightSphere.getRadius();
+    double discriminant = B * B - 4 * A * C;
+
+    if (discriminant > 0) {
+        double t1 = (-B - Math.sqrt(discriminant)) / (2.0 * A);
+        double t2 = (-B + Math.sqrt(discriminant)) / (2.0 * A);
+        double t = Math.min(t1, t2);
+
+        if (t > 0 && t < closestIntersectionDistance) {
+            closestIntersectionDistance = t;
+            closestObjectColor = lightSphere.getMaterial().getColor();
         }
-    
-        for (Sphere sphere : scene.getObjects()) {
-            Vector oc = VectorCalculations.subtractVectors(ray.getOrigin(), sphere.getCenter());
-            double A = VectorCalculations.calculateDotProduct(ray.getDirection(), ray.getDirection());
-            double B = 2.0 * VectorCalculations.calculateDotProduct(oc, ray.getDirection());
-            double C = VectorCalculations.calculateDotProduct(oc, oc) - sphere.getRadius() * sphere.getRadius();
-            double discriminant = B * B - 4 * A * C;
-    
-            if (discriminant > 0) {
-                double t1 = (-B - Math.sqrt(discriminant)) / (2.0 * A);
-                double t2 = (-B + Math.sqrt(discriminant)) / (2.0 * A);
-                double t = Math.min(t1, t2);
-    
-                if (t > 0 && t < closestIntersectionDistance) {
-                    closestIntersectionDistance = t;
-                    Vector intersectionPoint = VectorCalculations.addVectors(ray.getOrigin(), VectorCalculations.multiplyVectorTo(ray.getDirection(), t));
-    
-                    if (isInShadow(intersectionPoint, sphere)) {
-                        closestObjectColor = Color.black; 
-                    } else {
-                        closestObjectColor = applyLuminanceDropOff(sphere.getMaterial().getColor(), intersectionPoint);
-                    }
+    }
+
+    Plane plane = scene.getDefaultPlane();
+    double planeIntersectionDistance = plane.intersect(ray);
+    if (planeIntersectionDistance < closestIntersectionDistance) {
+        closestIntersectionDistance = planeIntersectionDistance;
+        Vector intersectionPoint = VectorCalculations.addVectors(ray.getOrigin(), VectorCalculations.multiplyVectorTo(ray.getDirection(), planeIntersectionDistance));
+
+        if (isInShadow(intersectionPoint, plane)) {
+            closestObjectColor = Color.black;
+        } else {
+            closestObjectColor = plane.getColor();
+        }
+    }
+
+    for (Sphere sphere : scene.getObjects()) {
+        oc = VectorCalculations.subtractVectors(ray.getOrigin(), sphere.getCenter());
+        A = VectorCalculations.calculateDotProduct(ray.getDirection(), ray.getDirection());
+        B = 2.0 * VectorCalculations.calculateDotProduct(oc, ray.getDirection());
+        C = VectorCalculations.calculateDotProduct(oc, oc) - sphere.getRadius() * sphere.getRadius();
+        discriminant = B * B - 4 * A * C;
+
+        if (discriminant > 0) {
+            double t1 = (-B - Math.sqrt(discriminant)) / (2.0 * A);
+            double t2 = (-B + Math.sqrt(discriminant)) / (2.0 * A);
+            double t = Math.min(t1, t2);
+
+            if (t > 0 && t < closestIntersectionDistance) {
+                closestIntersectionDistance = t;
+                Vector intersectionPoint = VectorCalculations.addVectors(ray.getOrigin(), VectorCalculations.multiplyVectorTo(ray.getDirection(), t));
+
+                if (isInShadow(intersectionPoint, sphere)) {
+                    closestObjectColor = Color.black; 
+                } else {
+                    closestObjectColor = sphere.getMaterial().getColor();
                 }
             }
         }
-    
-        return closestObjectColor;
     }
+
+    return closestObjectColor;
+}
+
     
     private Color applyLuminanceDropOff(Color originalColor, Vector intersectionPoint) {
         Vector lightSourcePos = scene.getLight().getPosition();
         double distance = VectorCalculations.subtractVectors(lightSourcePos, intersectionPoint).getMagnitude();
-        double luminance = scene.getLight().getLuminance() / (distance * distance); // Inverse square law
+        double luminance = scene.getLight().getLuminance() / (distance * distance); 
         
-        double luminanceFactor = 5.0; // Adjust this factor to increase brightness
+        double luminanceFactor = 5.0; 
         luminance *= luminanceFactor;
         
-        luminance = Math.max(0, Math.min(1, luminance)); // Clamp luminance to the range [0, 1]
+        luminance = Math.max(0, Math.min(1, luminance)); 
         
         int red = (int) (originalColor.getRed() * luminance + 0.5);
         int green = (int) (originalColor.getGreen() * luminance + 0.5);
