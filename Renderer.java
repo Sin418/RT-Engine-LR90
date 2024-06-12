@@ -30,7 +30,6 @@ public class Renderer {
         double closestIntersectionDistance = Double.MAX_VALUE;
         Color closestObjectColor = Color.white;
 
-        // Check for plane intersections first
         Plane plane = scene.getDefaultPlane();
         double planeIntersectionDistance = plane.intersect(ray);
         if (planeIntersectionDistance < closestIntersectionDistance) {
@@ -44,7 +43,6 @@ public class Renderer {
             }
         }
 
-        // Check for sphere intersections
         for (Sphere sphere : scene.getObjects()) {
             Vector oc = VectorCalculations.subtractVectors(ray.getOrigin(), sphere.getCenter());
             double A = VectorCalculations.calculateDotProduct(ray.getDirection(), ray.getDirection());
@@ -115,11 +113,9 @@ public class Renderer {
         Vector lightSourcePos = scene.getLight().getPosition();
         Vector shadowRayDirection = VectorCalculations.subtractVectors(lightSourcePos, intersectionPoint).normalize();
 
-        // Offset intersection point slightly to avoid self-intersection
         Vector shadowRayOrigin = VectorCalculations.addVectors(intersectionPoint, VectorCalculations.multiplyVectorTo(shadowRayDirection, 0.001));
         Ray shadowRay = new Ray(shadowRayOrigin, shadowRayDirection);
 
-        // Check for sphere shadows
         for (Sphere obj : scene.getObjects()) {
             Vector oc = VectorCalculations.subtractVectors(shadowRay.getOrigin(), obj.getCenter());
             double A = VectorCalculations.calculateDotProduct(shadowRay.getDirection(), shadowRay.getDirection());
@@ -132,7 +128,6 @@ public class Renderer {
                 double t2 = (-B + Math.sqrt(discriminant)) / (2.0 * A);
                 double t = Math.min(t1, t2);
 
-                // Check if the intersection is between the intersection point and the light source
                 double lightDistance = VectorCalculations.subtractVectors(lightSourcePos, intersectionPoint).getMagnitude();
                 if (t > 0 && t < lightDistance) {
                     return true;
