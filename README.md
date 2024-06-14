@@ -1,7 +1,7 @@
 # RT-Engine-LR90
 
 ## Overview
-RT-Engine-LR90 is a lightweight, efficient ray tracing engine built in Java. It supports basic geometric shapes, shadows, and lighting to render realistic 2D scenes.
+RT-Engine-LR90 is a lightweight, efficient ray tracing engine built in Java. It supports basic geometric shapes, shadows, and lighting to render  2D scenes.
 
 ## Features
 - **Ray Tracing:** Core ray tracing algorithm to render 3D scenes.
