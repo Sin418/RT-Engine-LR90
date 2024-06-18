@@ -18,8 +18,7 @@ git clone https://github.com/Sin418/RT-Engine-LR90.git
 ```
 
 ## Usage
-Clone the repository and build the project using your preferred IDE.
-
+Run the code.
 ```bash
 java -cp bin Main
 ```
@@ -27,3 +26,4 @@ java -cp bin Main
 ## Contribution
 Contributions are welcome! Please fork the repository and create a pull request with your changes.
 
+![image](https://github.com/Sin418/RT-Engine-LR90/assets/93962833/eb5ba2ae-8831-41aa-83cf-d86245a78f07)
